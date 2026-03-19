@@ -1,34 +1,41 @@
-let musicPlaying = false
+let player;
+let musicPlaying = false;
 
 window.addEventListener('load', () => {
-    launchConfetti()
+    launchConfetti();
+});
 
-    // Autoplay music (works since user clicked Yes to get here)
-    const music = document.getElementById('bg-music')
-    music.volume = 0.3
-    music.play().catch(() => {})
-    musicPlaying = true
-    document.getElementById('music-toggle').textContent = '🔊'
-})
+// YouTube player ready
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('bg-music', {
+        events: {
+            onReady: (event) => {
+                // Start muted autoplay
+                event.target.setVolume(30);
+                event.target.playVideo();
+                musicPlaying = false;
+                document.getElementById('music-toggle').textContent = '🔇';
+            }
+        }
+    });
+}
 
 function launchConfetti() {
-    const colors = ['#ff69b4', '#ff1493', '#ff85a2', '#ffb3c1', '#ff0000', '#ff6347', '#fff', '#ffdf00']
-    const duration = 6000
-    const end = Date.now() + duration
+    const colors = ['#ff69b4', '#ff1493', '#ff85a2', '#ffb3c1', '#ff0000', '#ff6347', '#fff', '#ffdf00'];
+    const duration = 6000;
+    const end = Date.now() + duration;
 
-    // Initial big burst
     confetti({
         particleCount: 150,
         spread: 100,
         origin: { x: 0.5, y: 0.3 },
         colors
-    })
+    });
 
-    // Continuous side cannons
     const interval = setInterval(() => {
         if (Date.now() > end) {
-            clearInterval(interval)
-            return
+            clearInterval(interval);
+            return;
         }
 
         confetti({
@@ -37,7 +44,7 @@ function launchConfetti() {
             spread: 55,
             origin: { x: 0, y: 0.6 },
             colors
-        })
+        });
 
         confetti({
             particleCount: 40,
@@ -45,19 +52,20 @@ function launchConfetti() {
             spread: 55,
             origin: { x: 1, y: 0.6 },
             colors
-        })
-    }, 300)
+        });
+    }, 300);
 }
 
 function toggleMusic() {
-    const music = document.getElementById('bg-music')
+    if (!player) return;
+
     if (musicPlaying) {
-        music.pause()
-        musicPlaying = false
-        document.getElementById('music-toggle').textContent = '🔇'
+        player.mute();
+        musicPlaying = false;
+        document.getElementById('music-toggle').textContent = '🔇';
     } else {
-        music.play()
-        musicPlaying = true
-        document.getElementById('music-toggle').textContent = '🔊'
+        player.unMute();
+        musicPlaying = true;
+        document.getElementById('music-toggle').textContent = '🔊';
     }
 }
