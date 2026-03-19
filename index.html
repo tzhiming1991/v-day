@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will you be my wife? 💕</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -23,19 +21,19 @@
     </div>
 
     <div class="buttons">
-        <button id="yes-btn" onclick="handleYesClick()">Yes</button>
-        <button id="no-btn" onclick="handleNoClick()">No</button>
+        <button id="yes-btn">Yes</button>
+        <button id="no-btn">No</button>
     </div>
 
     <div id="tease-toast"></div>
 </div>
 
-<!-- AUDIO (LOCAL FILE ONLY - NO YOUTUBE) -->
+<!-- MUSIC -->
 <audio id="bg-music" loop>
-  <source src="audio/Ruth%20B%20-%20Dandelions%20%28Lyrics%29.mp3" type="audio/mpeg">
+    <source src="music/dandelions.mp3" type="audio/mpeg">
 </audio>
 
-<button id="music-toggle" onclick="toggleMusic()">🔇</button>
+<button id="music-toggle">🔇</button>
 
 <script src="script.js"></script>
 </body>
