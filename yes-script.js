@@ -1,24 +1,21 @@
 let player;
 let musicPlaying = false;
 
-window.addEventListener('load', () => {
-    launchConfetti();
-});
-
-// YouTube player ready
 function onYouTubeIframeAPIReady() {
-    player = new YT.Player('bg-music', {
-        events: {
-            onReady: (event) => {
-                // Start muted autoplay
-                event.target.setVolume(30);
-                event.target.playVideo();
-                musicPlaying = false;
-                document.getElementById('music-toggle').textContent = '🔇';
-            }
-        }
-    });
+    player = new YT.Player('bg-music');
 }
+
+// Start music ONLY after user interaction
+document.addEventListener("click", () => {
+    if (!player || musicPlaying) return;
+
+    player.unMute();
+    player.setVolume(30);
+    player.playVideo();
+
+    musicPlaying = true;
+    document.getElementById('music-toggle').textContent = '🔊';
+}, { once: true });
 
 function launchConfetti() {
     const colors = ['#ff69b4', '#ff1493', '#ff85a2', '#ffb3c1', '#ff0000', '#ff6347', '#fff', '#ffdf00'];
@@ -65,7 +62,9 @@ function toggleMusic() {
         document.getElementById('music-toggle').textContent = '🔇';
     } else {
         player.unMute();
+        player.playVideo();
         musicPlaying = true;
         document.getElementById('music-toggle').textContent = '🔊';
     }
+}
 }
