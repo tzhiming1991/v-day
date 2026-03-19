@@ -39,32 +39,70 @@ const yesBtn = document.getElementById('yes-btn')
 const noBtn = document.getElementById('no-btn')
 const music = document.getElementById('bg-music')
 
-// Autoplay: audio starts muted (bypasses browser policy), unmute immediately
-music.muted = true
-music.volume = 0.3
-music.play().then(() => {
-    music.muted = false
-}).catch(() => {
-    // Fallback: unmute on first interaction
-    document.addEventListener('click', () => {
-        music.muted = false
-        music.play().catch(() => {})
-    }, { once: true })
+// Persistent music system
+const music = document.getElementById('bg-music')
+let musicPlaying = false
+
+// Restore music state (if coming from yes page)
+window.addEventListener('load', () => {
+    const savedTime = localStorage.getItem('musicTime')
+    const wasPlaying = localStorage.getItem('musicPlaying') === 'true'
+
+    if (savedTime) music.currentTime = parseFloat(savedTime)
+
+    if (wasPlaying) {
+        startMusic()
+    }
 })
 
+// Start music on first interaction
+document.addEventListener('click', () => {
+    if (!musicPlaying) {
+        startMusic()
+    }
+}, { once: true })
+
+function startMusic() {
+    music.volume = 0
+    music.play().then(() => {
+        fadeInMusic()
+        musicPlaying = true
+        document.getElementById('music-toggle').textContent = '🔊'
+    }).catch(() => {})
+}
+
+// Smooth fade-in
+function fadeInMusic() {
+    let vol = 0
+    const fade = setInterval(() => {
+        vol += 0.05
+        if (vol >= 0.3) {
+            music.volume = 0.3
+            clearInterval(fade)
+        } else {
+            music.volume = vol
+        }
+    }, 100)
+}
+
+// Toggle button
 function toggleMusic() {
     if (musicPlaying) {
         music.pause()
         musicPlaying = false
+        localStorage.setItem('musicPlaying', 'false')
         document.getElementById('music-toggle').textContent = '🔇'
     } else {
-        music.muted = false
-        music.play()
-        musicPlaying = true
-        document.getElementById('music-toggle').textContent = '🔊'
+        startMusic()
+        localStorage.setItem('musicPlaying', 'true')
     }
 }
 
+// Save position before leaving page
+window.addEventListener('beforeunload', () => {
+    localStorage.setItem('musicTime', music.currentTime)
+    localStorage.setItem('musicPlaying', musicPlaying)
+})
 function handleYesClick() {
     if (!runawayEnabled) {
         // Tease her to try No first
