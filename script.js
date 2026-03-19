@@ -104,7 +104,8 @@ window.addEventListener('beforeunload', () => {
     localStorage.setItem('musicPlaying', musicPlaying)
 })
 function handleYesClick() {
-    if (!runawayEnabled) {
+ localStorage.setItem('musicPlaying', 'true')
+     if (!runawayEnabled) {
         // Tease her to try No first
         const msg = yesTeasePokes[Math.min(yesTeasedCount, yesTeasePokes.length - 1)]
         yesTeasedCount++
