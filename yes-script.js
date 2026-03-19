@@ -2,19 +2,60 @@ let musicPlaying = false;
 
 window.addEventListener('load', () => {
     launchConfetti();
-});
 
-// Start music ONLY after user interaction
-document.addEventListener("click", () => {
-    const music = document.getElementById('bg-music');
+    const music = document.getElementById('bg-music')
 
-    if (!musicPlaying) {
-        music.volume = 0.3;
-        music.play().catch(() => {});
-        musicPlaying = true;
-        document.getElementById('music-toggle').textContent = '🔊';
+    const savedTime = localStorage.getItem('musicTime')
+    const wasPlaying = localStorage.getItem('musicPlaying') === 'true'
+
+    if (savedTime) music.currentTime = parseFloat(savedTime)
+
+    if (wasPlaying) {
+        music.volume = 0
+        music.play().then(() => {
+            fadeInMusic(music)
+            musicPlaying = true
+            document.getElementById('music-toggle').textContent = '🔊'
+        }).catch(() => {})
     }
-}, { once: true });
+})
+
+// Fade-in function
+function fadeInMusic(music) {
+    let vol = 0
+    const fade = setInterval(() => {
+        vol += 0.05
+        if (vol >= 0.3) {
+            music.volume = 0.3
+            clearInterval(fade)
+        } else {
+            music.volume = vol
+        }
+    }, 100)
+}
+
+// Toggle
+function toggleMusic() {
+    const music = document.getElementById('bg-music')
+
+    if (musicPlaying) {
+        music.pause()
+        musicPlaying = false
+        localStorage.setItem('musicPlaying', 'false')
+        document.getElementById('music-toggle').textContent = '🔇'
+    } else {
+        music.play()
+        musicPlaying = true
+        localStorage.setItem('musicPlaying', 'true')
+        document.getElementById('music-toggle').textContent = '🔊'
+    }
+}
+
+// Save position
+window.addEventListener('beforeunload', () => {
+    const music = document.getElementById('bg-music')
+    localStorage.setItem('musicTime', music.currentTime)
+})
 
 function launchConfetti() {
     const colors = ['#ff69b4', '#ff1493', '#ff85a2', '#ffb3c1', '#ff0000', '#ff6347', '#fff', '#ffdf00'];
