@@ -1,62 +1,79 @@
 let musicPlaying = false;
+const music = document.getElementById('bg-music');
 
 window.addEventListener('load', () => {
     launchConfetti();
 
-    const music = document.getElementById('bg-music')
+    if (!music) return;
 
-    const savedTime = localStorage.getItem('musicTime')
-    const wasPlaying = localStorage.getItem('musicPlaying') === 'true'
+    const savedTime = localStorage.getItem('musicTime');
+    const wasPlaying = localStorage.getItem('musicPlaying') === 'true';
 
-    if (savedTime) music.currentTime = parseFloat(savedTime)
+    if (savedTime) {
+        music.currentTime = parseFloat(savedTime);
+    }
 
     if (wasPlaying) {
-        music.volume = 0
+        music.volume = 0;
         music.play().then(() => {
-            fadeInMusic(music)
-            musicPlaying = true
-            document.getElementById('music-toggle').textContent = '🔊'
-        }).catch(() => {})
+            fadeInMusic();
+            musicPlaying = true;
+            updateButton();
+        }).catch(() => {});
     }
-})
+});
 
-// Fade-in function
-function fadeInMusic(music) {
-    let vol = 0
+// 🎵 Smooth fade-in
+function fadeInMusic() {
+    let vol = 0;
+
     const fade = setInterval(() => {
-        vol += 0.05
+        vol += 0.05;
+
         if (vol >= 0.3) {
-            music.volume = 0.3
-            clearInterval(fade)
+            music.volume = 0.3;
+            clearInterval(fade);
         } else {
-            music.volume = vol
+            music.volume = vol;
         }
-    }, 100)
+    }, 100);
 }
 
-// Toggle
+// 🔊 Toggle music (ONLY ONE VERSION)
 function toggleMusic() {
-    const music = document.getElementById('bg-music')
+    if (!music) return;
 
     if (musicPlaying) {
-        music.pause()
-        musicPlaying = false
-        localStorage.setItem('musicPlaying', 'false')
-        document.getElementById('music-toggle').textContent = '🔇'
+        music.pause();
+        musicPlaying = false;
+        localStorage.setItem('musicPlaying', 'false');
     } else {
-        music.play()
-        musicPlaying = true
-        localStorage.setItem('musicPlaying', 'true')
-        document.getElementById('music-toggle').textContent = '🔊'
+        music.play().then(() => {
+            musicPlaying = true;
+            localStorage.setItem('musicPlaying', 'true');
+        }).catch(() => {});
     }
+
+    updateButton();
 }
 
-// Save position
-window.addEventListener('beforeunload', () => {
-    const music = document.getElementById('bg-music')
-    localStorage.setItem('musicTime', music.currentTime)
-})
+// 🔘 Button UI sync
+function updateButton() {
+    const btn = document.getElementById('music-toggle');
+    if (!btn) return;
 
+    btn.textContent = musicPlaying ? '🔊' : '🔇';
+}
+
+// 💾 Save progress before leaving
+window.addEventListener('beforeunload', () => {
+    if (!music) return;
+
+    localStorage.setItem('musicTime', music.currentTime);
+    localStorage.setItem('musicPlaying', musicPlaying);
+});
+
+// 🎉 Confetti (unchanged, just cleaned)
 function launchConfetti() {
     const colors = ['#ff69b4', '#ff1493', '#ff85a2', '#ffb3c1', '#ff0000', '#ff6347', '#fff', '#ffdf00'];
     const duration = 6000;
@@ -91,18 +108,4 @@ function launchConfetti() {
             colors
         });
     }, 300);
-}
-
-function toggleMusic() {
-    const music = document.getElementById('bg-music');
-
-    if (musicPlaying) {
-        music.pause();
-        musicPlaying = false;
-        document.getElementById('music-toggle').textContent = '🔇';
-    } else {
-        music.play();
-        musicPlaying = true;
-        document.getElementById('music-toggle').textContent = '🔊';
-    }
 }
