@@ -1,12 +1,17 @@
-let music, musicPlaying = false;
+let musicPlaying = false;
+const music = document.getElementById("bg-music");
 
-window.addEventListener("DOMContentLoaded", () => {
-    music = document.getElementById("bg-music");
-
-    const time = localStorage.getItem("musicTime");
-    const wasPlaying = localStorage.getItem("musicPlaying") === "true";
-
-    if (time) music.currentTime = parseFloat(time);
+function toggleMusic() {
+    if (!musicPlaying) {
+        music.play();
+        musicPlaying = true;
+        document.getElementById("music-toggle").innerText = "🔇";
+    } else {
+        music.pause();
+        musicPlaying = false;
+        document.getElementById("music-toggle").innerText = "🔊";
+    }
+}
 
     launchConfetti();
 
