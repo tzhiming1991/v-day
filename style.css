@@ -1,41 +1,60 @@
 body {
     margin: 0;
     font-family: 'Nunito', sans-serif;
-    background: #ffe4e8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background: #ffe6f0;
+    overflow: hidden;
+    text-align: center;
 }
 
 .container {
-    text-align: center;
+    margin-top: 80px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #ff4d6d;
+}
+
+.gif-container img {
+    width: 250px;
+    border-radius: 20px;
+}
+
+.buttons {
+    margin-top: 20px;
 }
 
 button {
     padding: 12px 24px;
-    margin: 10px;
+    font-size: 18px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+    margin: 10px;
+    transition: 0.3s;
 }
 
 #yes-btn {
-    background: #4caf50;
+    background: #ff4d6d;
     color: white;
-    font-size: 20px;
 }
 
 #no-btn {
-    background: #e74c3c;
-    color: white;
+    background: #ccc;
 }
 
 #music-toggle {
     position: fixed;
     bottom: 20px;
     right: 20px;
+    font-size: 22px;
+    background: white;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    padding: 10px;
+}
+
+#tease-toast {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #ff4d6d;
 }
