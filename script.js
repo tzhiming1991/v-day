@@ -21,15 +21,17 @@ document.addEventListener("click", async () => {
 }, { once: true });
 
 // TOGGLE MUSIC
-toggleBtn.addEventListener("click", () => {
-    if (music.paused) {
-        music.play();
-        toggleBtn.textContent = "🔊";
-    } else {
-        music.pause();
-        toggleBtn.textContent = "🔇";
-    }
-});
+if (toggleBtn && music) {
+    toggleBtn.addEventListener("click", () => {
+        if (music.paused) {
+            music.play();
+            toggleBtn.textContent = "🔊";
+        } else {
+            music.pause();
+            toggleBtn.textContent = "🔇";
+        }
+    });
+}
 
 // YES BUTTON
 yesBtn.addEventListener("click", () => {
