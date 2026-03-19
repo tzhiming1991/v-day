@@ -2,43 +2,6 @@ let musicPlaying = false;
 const music = document.getElementById("bg-music");
 
 function toggleMusic() {
-    if (!musicPlaying) {
-        music.play();
-        musicPlaying = true;
-        document.getElementById("music-toggle").innerText = "🔇";
-    } else {
-        music.pause();
-        musicPlaying = false;
-        document.getElementById("music-toggle").innerText = "🔊";
-    }
-}
-
-    launchConfetti();
-
-    if (wasPlaying) {
-        music.volume = 0;
-        music.play().then(() => {
-            fadeIn();
-            musicPlaying = true;
-            updateBtn();
-        });
-    }
-});
-
-function fadeIn() {
-    let v = 0;
-    const fade = setInterval(() => {
-        v += 0.05;
-        if (v >= 0.3) {
-            music.volume = 0.3;
-            clearInterval(fade);
-        } else {
-            music.volume = v;
-        }
-    }, 100);
-}
-
-function toggleMusic() {
     if (musicPlaying) {
         music.pause();
         musicPlaying = false;
@@ -54,9 +17,9 @@ function updateBtn() {
         musicPlaying ? "🔊" : "🔇";
 }
 
-window.addEventListener("beforeunload", () => {
-    localStorage.setItem("musicTime", music.currentTime);
-    localStorage.setItem("musicPlaying", musicPlaying);
+// optional: confetti on load
+window.addEventListener("load", () => {
+    launchConfetti();
 });
 
 function launchConfetti() {
@@ -72,5 +35,11 @@ function launchConfetti() {
             spread: 80,
             origin: { x: Math.random(), y: 0 }
         });
-    }, 300);
+    }, 3000);
 }
+
+// save state
+window.addEventListener("beforeunload", () => {
+    localStorage.setItem("musicTime", music.currentTime);
+    localStorage.setItem("musicPlaying", musicPlaying);
+});
