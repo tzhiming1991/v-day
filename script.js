@@ -8,11 +8,15 @@ let noClicks = 0;
 let musicPlaying = false;
 
 // MUSIC AUTOPLAY FIX (browser requires user interaction)
-document.addEventListener("click", () => {
-    if (!musicPlaying) {
-        music.play();
-        musicPlaying = true;
-        toggleBtn.textContent = "🔊";
+document.addEventListener("click", async () => {
+    if (!musicPlaying && music) {
+        try {
+            await music.play();
+            musicPlaying = true;
+            toggleBtn.textContent = "🔊";
+        } catch (err) {
+            console.log("Audio blocked:", err);
+        }
     }
 }, { once: true });
 
