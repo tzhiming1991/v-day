@@ -22,6 +22,9 @@ window.addEventListener("load", () => {
     launchConfetti();
 });
 
+// simple confetti or future expansion
+console.log("She said yes 💕");
+
 function launchConfetti() {
     confetti({
         particleCount: 150,
