@@ -1,25 +1,27 @@
-<script src="/music/dandelions.mp3" type="audio/mpeg">
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yay!</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="hearts-bg"></div>
 
-    <div class="container yes-container">
-        <h1 class="yes-title">Knew you would say yes! 🎉</h1>
+<div class="container yes-container">
+    <h1>Knew you would say yes! 🎉</h1>
 
-        <div class="gif-container">
-            <img id="cat-gif" src="https://media.tenor.com/eNHbizSfVb0AAAAj/lovemode-cute.gif" alt="celebrating">
-        </div>
+    <img src="https://media.tenor.com/eNHbizSfVb0AAAAj/lovemode-cute.gif">
 
-        <p class="yes-message">YAY youre my wife and im your husband now hehe! I love you my baby J! 💕</p>
-    </div>
+    <p>YAY you're my wife now 💕</p>
+</div>
 
 <audio id="bg-music" loop>
   <source src="music/dandelions.mp3" type="audio/mpeg">
 </audio>
-    
-<button id="music-toggle">Tap for music 🎵</button>
-    <script src="/music/dandelions.mp3"></script>
-    <script src="yes-script.js"></script>
+
+<button id="music-toggle" onclick="toggleMusic()">🔊</button>
+
+<script src="yes-script.js"></script>
+
 </body>
 </html>
