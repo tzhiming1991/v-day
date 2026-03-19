@@ -33,25 +33,5 @@ style="position: fixed; width: 0; height: 0; border: 0;">
     <button id="music-toggle" onclick="toggleMusic()" title="Toggle music">🔊</button>
 
     <script src="yes-script.js"></script>
-    let player;
-let isMuted = true;
-
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('bg-music');
-}
-
-function toggleMusic() {
-    if (!player) return;
-
-    if (isMuted) {
-        player.unMute();
-        isMuted = false;
-        document.getElementById("music-toggle").innerText = "🔊";
-    } else {
-        player.mute();
-        isMuted = true;
-        document.getElementById("music-toggle").innerText = "🔇";
-    }
-}
 </body>
 </html>
