@@ -1,26 +1,27 @@
-let musicPlaying = false;
+let music, musicPlaying = false;
 
-let catGif, yesBtn, noBtn, music;
+const gifStages = [
+    "https://media.tenor.com/EBV7OT7ACfwAAAAj/u-u-qua-qua-u-quaa.gif",
+    "https://media.tenor.com/f_rkpJbH1s8AAAAj/somsom1012.gif",
+    "https://media.tenor.com/OGY9zdREsVAAAAAj/somsom1012.gif",
+    "https://media.tenor.com/5_tv1HquZlcAAAAj/chiikawa.gif"
+];
 
-window.addEventListener('DOMContentLoaded', () => {
-    catGif = document.getElementById('cat-gif');
-    yesBtn = document.getElementById('yes-btn');
-    noBtn = document.getElementById('no-btn');
-    music = document.getElementById('bg-music');
+let noClick = 0;
+let runaway = false;
 
-    if (music) {
-        music.volume = 0.3;
-    }
-
-    launchConfetti();
+window.addEventListener("DOMContentLoaded", () => {
+    music = document.getElementById("bg-music");
+    music.volume = 0.3;
 });
 
-// safe autoplay (GitHub Pages friendly)
-window.addEventListener('click', () => {
-    if (music && !musicPlaying) {
-        music.play().catch(() => {});
-        musicPlaying = true;
-        updateMusicButton();
+// 🔥 start music only after interaction (GitHub safe)
+document.addEventListener("click", () => {
+    if (!musicPlaying && music) {
+        music.play().then(() => {
+            musicPlaying = true;
+            updateBtn();
+        }).catch(() => {});
     }
 }, { once: true });
 
@@ -31,15 +32,46 @@ function toggleMusic() {
         music.pause();
         musicPlaying = false;
     } else {
-        music.play().catch(() => {});
+        music.play();
         musicPlaying = true;
     }
 
-    updateMusicButton();
+    updateBtn();
 }
 
-function updateMusicButton() {
-    const btn = document.getElementById('music-toggle');
-    if (!btn) return;
-    btn.textContent = musicPlaying ? '🔊' : '🔇';
+function updateBtn() {
+    document.getElementById("music-toggle").textContent =
+        musicPlaying ? "🔊" : "🔇";
+}
+
+/* YES */
+function handleYesClick() {
+    localStorage.setItem("musicTime", music?.currentTime || 0);
+    localStorage.setItem("musicPlaying", musicPlaying);
+
+    window.location.href = "yes.html";
+}
+
+/* NO */
+function handleNoClick() {
+    noClick++;
+
+    const yesBtn = document.getElementById("yes-btn");
+    const noBtn = document.getElementById("no-btn");
+    const gif = document.getElementById("cat-gif");
+
+    noBtn.textContent = "No way 😭";
+
+    yesBtn.style.transform = `scale(${1 + noClick * 0.2})`;
+
+    gif.src = gifStages[Math.min(noClick, gifStages.length - 1)];
+
+    if (noClick > 4 && !runaway) {
+        runaway = true;
+        noBtn.style.position = "fixed";
+        noBtn.addEventListener("mouseover", () => {
+            noBtn.style.left = Math.random() * 80 + "%";
+            noBtn.style.top = Math.random() * 80 + "%";
+        });
+    }
 }
