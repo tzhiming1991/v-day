@@ -1,20 +1,19 @@
-let player;
 let musicPlaying = false;
 
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('bg-music');
-}
+window.addEventListener('load', () => {
+    launchConfetti();
+});
 
 // Start music ONLY after user interaction
 document.addEventListener("click", () => {
-    if (!player || musicPlaying) return;
+    const music = document.getElementById('bg-music');
 
-    player.unMute();
-    player.setVolume(30);
-    player.playVideo();
-
-    musicPlaying = true;
-    document.getElementById('music-toggle').textContent = '🔊';
+    if (!musicPlaying) {
+        music.volume = 0.3;
+        music.play().catch(() => {});
+        musicPlaying = true;
+        document.getElementById('music-toggle').textContent = '🔊';
+    }
 }, { once: true });
 
 function launchConfetti() {
@@ -54,17 +53,15 @@ function launchConfetti() {
 }
 
 function toggleMusic() {
-    if (!player) return;
+    const music = document.getElementById('bg-music');
 
     if (musicPlaying) {
-        player.mute();
+        music.pause();
         musicPlaying = false;
         document.getElementById('music-toggle').textContent = '🔇';
     } else {
-        player.unMute();
-        player.playVideo();
+        music.play();
         musicPlaying = true;
         document.getElementById('music-toggle').textContent = '🔊';
     }
-}
 }
